@@ -39,6 +39,11 @@ window.Balls = (function() {
     });
   }, false);
 
+  window.addEventListener('resize', function(event) {
+    Balls.screen.height = window.innerHeight;
+    Balls.screen.width = window.innerWidth;
+  });
+
 
   var Ball = function(radius, speed) {
     this.radius = radius;
