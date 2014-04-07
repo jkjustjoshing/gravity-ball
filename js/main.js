@@ -7,7 +7,6 @@ window.Balls = (function() {
   var Balls = {
 
     ballArray: [],
-    speed: 1,
 
     initialize: function() {
       // get width/height
@@ -17,13 +16,18 @@ window.Balls = (function() {
       };
       this.rootEle = document.getElementById('view');
 
-      this.add(new Ball(10, 10));
+      this.add(new Ball(10, 1), [10,10]);
+      this.add(new Ball(20, 0.6));
 
     },
 
-    add: function(ball) {
+    add: function(ball, coordinates) {
       this.ballArray.push(ball);
-      ball.moveTo(this.screen.width/2, this.screen.height/2);
+      if(coordinates) {
+        ball.moveTo(coordinates[0], coordinates[1]);
+      } else {
+        ball.moveTo(this.screen.width/2, this.screen.height/2);
+      }
       this.rootEle.appendChild(ball.getEle());
     }
   };
@@ -31,13 +35,14 @@ window.Balls = (function() {
 
   window.addEventListener('deviceorientation', function(event) {
     Balls.ballArray.forEach(function(ball) {
-      ball.moveBy(event.gamma*Balls.speed, event.beta*Balls.speed);
+      ball.moveBy(event.gamma*ball.speed, event.beta*ball.speed);
     });
   }, false);
 
 
-  var Ball = function(radius) {
+  var Ball = function(radius, speed) {
     this.radius = radius;
+    this.speed = speed;
     this.position = {
       x: 0,
       y: 0
